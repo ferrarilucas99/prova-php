@@ -1,4 +1,8 @@
 <?php
+namespace Classes;
+
+use PDO;
+use stdClass;
 
 class Connection {
 
@@ -7,7 +11,7 @@ class Connection {
 
     public function __construct()
     {
-        $this->databaseFile = realpath(__DIR__ . "/database/db.sqlite");
+        $this->databaseFile = realpath(__DIR__ . "/../database/db.sqlite");
         $this->connect();
     }
 
@@ -23,7 +27,7 @@ class Connection {
 
     public function query($query)
     {
-        $result      = $this->getConnection()->query($query);
+        $result = $this->getConnection()->query($query);
 
         $result->setFetchMode(PDO::FETCH_INTO, new stdClass);
 

@@ -1,34 +1,11 @@
 <?php
 
-require 'connection.php';
+require_once __DIR__.'/classes/autoload.php';
 
-$connection = new Connection();
+use Controllers\AppController;
 
-$users = $connection->query("SELECT * FROM users");
+$controller = new AppController();
 
-echo "<table border='1'>
+$action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-    <tr>
-        <th>ID</th>    
-        <th>Nome</th>    
-        <th>Email</th>
-        <th>Ação</th>    
-    </tr>
-";
-
-foreach($users as $user) {
-
-    echo sprintf("<tr>
-                      <td>%s</td>
-                      <td>%s</td>
-                      <td>%s</td>
-                      <td>
-                           <a href='#'>Editar</a>
-                           <a href='#'>Excluir</a>
-                      </td>
-                   </tr>",
-        $user->id, $user->name, $user->email);
-
-}
-
-echo "</table>";
+$controller->{$action}();
