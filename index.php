@@ -2,10 +2,16 @@
 
 require_once __DIR__.'/classes/autoload.php';
 
-use Controllers\AppController;
+require_once __DIR__.'/routes.php';
 
-$controller = new AppController();
+$method = $_SERVER['REQUEST_METHOD'];
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$router->handleRequest($method, $path);
 
-$action = isset($_GET['action']) ? $_GET['action'] : 'index';
+// use Controllers\UsersController;
 
-$controller->{$action}();
+// $controller = new UsersController();
+
+// $action = isset($_GET['action']) ? $_GET['action'] : 'index';
+
+// $controller->{$action}();

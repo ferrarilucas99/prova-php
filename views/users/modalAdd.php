@@ -5,7 +5,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Novo usuário</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="index.php?action=create" method="POST" id="add-user" enctype="multipart/form-data">
+            <form action="/users/create" method="POST" id="add-form" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -15,6 +15,19 @@
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="col-12">
+                            <?php 
+                                foreach($colors as $color){
+                                    echo '<div class="form-check">
+                                            <input class="form-check-input input-colors" type="checkbox" id="color-'.$color->id.'" name="colors[]" value="'.$color->id.'">
+                                            <label class="form-check-label d-flex" for="color-'.$color->id.'">
+                                                '.$color->name.'
+                                                <span class="color" style="background-color: '.$color->name.'"></span>
+                                            </label>
+                                        </div>';
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>

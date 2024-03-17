@@ -31,8 +31,8 @@
                     <thead>
                         <tr>
                             <th width="30px">ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
+                            <th>Cor</th>
+                            <th width="35px"></th>
                             <th width="55px"></th>
                             <th width="55px"></th>
                         </tr>
@@ -40,19 +40,19 @@
             
                     <tbody>
                         <?php
-                            foreach($users as $user){
-                                $json_escaped = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
+                            foreach($colors as $color){
+                                $json_escaped = htmlspecialchars(json_encode($color), ENT_QUOTES, 'UTF-8');
                                 $html = '<tr>
-                                            <td>'.$user->id.'</td>
-                                            <td>'.$user->name.'</td>
-                                            <td>'.$user->email.'</td>
+                                            <td>'.$color->id.'</td>
+                                            <td>'.$color->name.'</td>
+                                            <td><div class="color" style="background-color: '.$color->name.'"></div></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary" data-model="users" data-json="'.$json_escaped.'" data-edit>
+                                                <button type="button" class="btn btn-primary" data-model="colors" data-json="'.$json_escaped.'" data-edit>
                                                     Editar
                                                 </button>
                                             </td>
                                             <td>
-                                                <form action="/users/delete/'.$user->id.'" method="POST" data-delete>
+                                                <form action="/colors/delete/'.$color->id.'" method="POST" data-delete>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="submit" class="btn btn-danger">
                                                         Excluir

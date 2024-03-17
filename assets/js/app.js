@@ -4,7 +4,7 @@ var table = new DataTable('#myTable', {
     },
 });
 
-$('#add-user').on('submit', (e) => {
+$('#add-form').on('submit', (e) => {
     e.preventDefault();
 
     var $this = $(e.currentTarget);
@@ -12,8 +12,8 @@ $('#add-user').on('submit', (e) => {
     var spinner = $this.find('.spinner');
     var formData = new FormData(e.currentTarget);
 
-    btn.prop('disabled', true);
-    spinner.removeClass('d-none');
+    // btn.prop('disabled', true);
+    // spinner.removeClass('d-none');
 
     $.ajax({
         url: $this.attr('action'),
@@ -25,7 +25,7 @@ $('#add-user').on('submit', (e) => {
             response = JSON.parse(response);
 
             if(response.success){
-                mountDataTables();
+                mountDataTables(response.model);
                 toastr.success(response.message);
                 $this.trigger('reset');
                 $('#add-modal').modal('hide');
@@ -42,12 +42,42 @@ $('#add-user').on('submit', (e) => {
     })
 });
 
+$(document).on('click', '[data-color]', (e) => {
+    var $this = $(e.currentTarget);
+    var input_group = $this.next('.color-group');
+
+    var color_simple = input_group.find('.color_simple_block');
+    var color_specific = input_group.find('.color_specific_block');
+    
+    var color_simple_input = color_simple.find('input');
+    var color_specific_input = color_specific.find('input');
+
+    if(color_simple.hasClass('d-none') && !color_specific.hasClass('d-none')){
+        $this.text('Usar cor específica');
+
+        color_simple.removeClass('d-none');
+        color_specific.addClass('d-none');
+
+        color_simple_input.prop('required', true);
+        color_specific_input.attr('name', '').prop('required', false);
+    }else {
+        $this.text('Usar cor simples');
+
+        color_specific.removeClass('d-none');
+        color_simple.addClass('d-none');
+
+        color_specific_input.attr('name', 'color_specific').prop('required', true);
+        color_simple_input.prop('required', false);
+    }
+});
+
 $(document).on('click', 'button[data-edit]', (e) => {
     var $this = $(e.currentTarget);
     var modal = $('#edit-modal');
+    var model = $this.data('model');
     var json = $this.data('json');
     clearModalInputs();
-    setModalInputsValues(json);
+    setModalInputsValues(json, model);
     modal.modal('show')
 });
 
@@ -71,7 +101,7 @@ $('#edit-user').on('submit', (e) => {
         success: (response) => {
             response = JSON.parse(response);
             if(response.success){
-                mountDataTables();
+                mountDataTables(response.model);
                 toastr.success(response.message);
                 $this.trigger('reset');
                 $('#edit-modal').modal('hide');
@@ -104,7 +134,7 @@ $(document).on('submit', 'form[data-delete]', (e) => {
             success: (response) => {
                 response = JSON.parse(response);
                 if(response.success){
-                    mountDataTables();
+                    mountDataTables(response.model);
                     toastr.success(response.message);
                 }
             },
@@ -115,7 +145,7 @@ $(document).on('submit', 'form[data-delete]', (e) => {
     }
 });
 
-function mountDataTables(){
+function mountDataTables(model){
     $('#myTable').DataTable().destroy();
 
     $('#myTable').DataTable({
@@ -123,18 +153,27 @@ function mountDataTables(){
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json',
         },
         ajax: {
-            url: 'index.php?action=ajax',
+            url: `/${model}/ajax`,
             type: 'GET',
             dataSrc: ''
         },
         columns: [
             { data: 'id' },
             { data: 'name' },
-            { data: 'email' },
+            { 
+                data: model == 'users' ? 'email' : 'name',
+                render: function(data){
+                    if(model == 'users'){
+                        return data;
+                    }else{
+                        return `<div class="color" style="background-color: ${data}">`;
+                    }
+                }
+            },
             {
                 data: null,
                 render: function(rowData){
-                    return `<button type="button" class="btn btn-primary" data-json='${JSON.stringify(rowData)}' data-edit>
+                    return `<button type="button" class="btn btn-primary" data-model="${model}" data-json='${JSON.stringify(rowData)}' data-edit>
                                 Editar
                             </button>`;
                 }
@@ -142,7 +181,7 @@ function mountDataTables(){
             {
                 data: 'id',
                 render: function(data){
-                    return `<form action="index.php?action=destroy&id=${data}" method="POST" data-delete>
+                    return `<form action="/${model}/delete/${data}" method="POST" data-delete>
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger">
                                     Excluir
@@ -161,13 +200,19 @@ function clearModalInputs(){
     modal.find('#user-id').text('');
     modal.find('#name-edit').val('');
     modal.find('#email-edit').val('');
+
+    modal.find('.form-control-simple-color').val('');
+    modal.find('.form-control-color').val('');
 }
 
-function setModalInputsValues(json){
+function setModalInputsValues(json, model){
     var modal = $('#edit-modal');
     var form = $('#edit-user');
-    form.attr('action', `index.php?action=update&id=${json.id}`)
-    modal.find('#user-id').text(`#${json.id}`);
+    form.attr('action', `${window.location.origin}/${model}/update/${json.id}`)
+    modal.find('#model-id').text(`#${json.id}`);
     modal.find('#name-edit').val(json.name);
     modal.find('#email-edit').val(json.email);
+
+    modal.find('#color_simple_input').val(json.name);
+    modal.find('#color_specific_input').val(json.name);
 }

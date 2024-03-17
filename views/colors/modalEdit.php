@@ -2,20 +2,22 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuário <span id="model-id"></span></h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar cor <span id="model-id"></span></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="POST" id="edit-user">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="name-edit" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="name-edit" placeholder="Nome" name="name" value="">
+                    <div class="alert alert-warning">Se informado os 2 campos, Cor específica terá preferência.</div>
+                    <button type="button" class="btn btn-primary mb-3" data-color>Usar cor específica</button>
+                    <div class="row color-group">
+                        <div class="col-md-8 mb-3 color_simple_block">
+                            <label for="color_simple_input" class="form-label">Cor simples</label>
+                            <input type="text" class="form-control form-control-simple-color" id="color_simple_input" placeholder="Cor Simples" name="color_simple" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="email-edit" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email-edit" placeholder="Email" name="email" value="">
+                        <div class="col-md-4 mb-3 color_specific_block d-none">
+                            <label for="color_specific_input" class="form-label">Cor específica</label>
+                            <input type="color" class="form-control form-control-color" id="color_specific_input" name="" value="#000000">
                         </div>
                     </div>
                 </div>
