@@ -20,7 +20,9 @@ class UsersController
         $users = $this->user->get();
         $colors = $this->color->get();
 
-        require_once 'views/users/index.php';
+        // require_once 'views/users/index.php';
+        $view_path = '/users/index.php';
+        require_once 'views/layouts/main.php';
     }
 
     public function create()
@@ -49,6 +51,7 @@ class UsersController
             $request = [
                 'name' => $_REQUEST['name'],
                 'email' => $_REQUEST['email'],
+                'colors' => isset($_REQUEST['colors']) && !empty($_REQUEST['colors']) ? $_REQUEST['colors'] : null,
             ];
     
             $update_user = $this->user->update($request, $id);

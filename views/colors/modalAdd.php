@@ -18,6 +18,18 @@
                             <label for="color_specific_input" class="form-label">Cor específica</label>
                             <input type="color" class="form-control form-control-color" id="color_specific_input" name="" value="#000000">
                         </div>
+                        <div class="col-12">
+                            <?php 
+                                foreach($users as $user){
+                                    echo '<div class="form-check">
+                                            <input class="form-check-input input-users" type="checkbox" id="users-'.$user->id.'" name="users[]" value="'.$user->id.'">
+                                            <label class="form-check-label d-flex" for="users-'.$user->id.'">
+                                                '.$user->name.'
+                                            </label>
+                                        </div>';
+                                }
+                            ?>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

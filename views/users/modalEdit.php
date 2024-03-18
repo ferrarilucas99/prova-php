@@ -17,6 +17,19 @@
                             <label for="email-edit" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email-edit" placeholder="Email" name="email" value="">
                         </div>
+                        <div class="col-12">
+                            <?php 
+                                foreach($colors as $color){
+                                    echo '<div class="form-check">
+                                            <input class="form-check-input input-colors" type="checkbox" id="edit-color-'.$color->id.'" name="colors[]" value="'.$color->id.'">
+                                            <label class="form-check-label d-flex" for="edit-color-'.$color->id.'">
+                                                '.$color->name.'
+                                                <span class="color" style="background-color: '.$color->name.'"></span>
+                                            </label>
+                                        </div>';
+                                }
+                            ?>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -196,6 +196,9 @@ function mountDataTables(model){
 function clearModalInputs(){
     var modal = $('#edit-modal');
     var form = $('#edit-user');
+    var colors = modal.find('input[name="colors[]"');
+    var users = modal.find('input[name="users[]"');
+    
     form.attr('action', '')
     modal.find('#user-id').text('');
     modal.find('#name-edit').val('');
@@ -203,11 +206,26 @@ function clearModalInputs(){
 
     modal.find('.form-control-simple-color').val('');
     modal.find('.form-control-color').val('');
+
+    if(colors.length > 0){
+        colors.each((key, element) => {
+            $(element).prop('checked', false);
+        });
+    }
+
+    if(users.length > 0){
+        users.each((key, element) => {
+            $(element).prop('checked', false);
+        });
+    }
 }
 
 function setModalInputsValues(json, model){
     var modal = $('#edit-modal');
     var form = $('#edit-user');
+    var colors = modal.find('input[name="colors[]"');
+    var users = modal.find('input[name="users[]"');
+    
     form.attr('action', `${window.location.origin}/${model}/update/${json.id}`)
     modal.find('#model-id').text(`#${json.id}`);
     modal.find('#name-edit').val(json.name);
@@ -215,4 +233,20 @@ function setModalInputsValues(json, model){
 
     modal.find('#color_simple_input').val(json.name);
     modal.find('#color_specific_input').val(json.name);
+
+    if(Array.isArray(json.colors) && colors.length > 0){
+        colors.each((key, element) => {
+            if(json.colors.includes($(element).val())){
+                $(element).prop('checked', true);
+            }
+        });
+    }
+
+    if(Array.isArray(json.users) && users.length > 0){
+        users.each((key, element) => {
+            if(json.users.includes($(element).val())){
+                $(element).prop('checked', true);
+            }
+        });
+    }
 }
