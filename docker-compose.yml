@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+    webserver:
+        build: docker/nginx
+        volumes:
+            - .:/var/www/html
+            - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - 7070:80
+
+    php-fpm:
+        build: docker/php-fpm
+        volumes:
+            - .:/var/www/html
+            - ./docker/php-fpm/php-ini-custom.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini
