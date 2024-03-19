@@ -5,17 +5,17 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar usuário <span id="model-id"></span></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST" id="edit-user">
+            <form action="" method="POST" data-edit>
                 <input type="hidden" name="_method" value="PUT">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name-edit" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="name-edit" placeholder="Nome" name="name" value="">
+                            <input type="text" class="form-control" id="name-edit" placeholder="Nome" name="name" value="" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email-edit" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email-edit" placeholder="Email" name="email" value="">
+                            <input type="email" class="form-control" id="email-edit" placeholder="Email" name="email" value="" required>
                         </div>
                         <div class="col-12">
                             <?php 

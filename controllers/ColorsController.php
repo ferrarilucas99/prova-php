@@ -20,16 +20,23 @@ class ColorsController
         $colors = $this->color->get();
         $users = $this->user->get();
 
-        // require_once 'views/colors/index.php';
         $view_path = '/colors/index.php';
         require_once 'views/layouts/main.php';
+        return;
     }
 
     public function create()
     {
+        $validation = $this->validate($_POST);
+
+        if(isset($validation['error']) && $validation['error']){
+            echo json_encode($validation);
+            return;
+        }
+
         $request = [
-            'name' => isset($_REQUEST['color_specific']) ? $_REQUEST['color_specific'] : $_REQUEST['color_simple'],
-            'users' => isset($_REQUEST['users']) ? $_REQUEST['users'] : null,
+            'name' => isset($_POST['color_specific']) ? $_POST['color_specific'] : $_POST['color_simple'],
+            'users' => isset($_POST['users']) ? $_POST['users'] : null,
         ];
 
         $new_color = $this->color->insert($request);
@@ -42,14 +49,22 @@ class ColorsController
         ];
 
         echo json_encode($response);
+        return;
     }
 
     public function update($id)
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method']) && $_POST['_method'] === 'PUT'){
+            $validation = $this->validate($_POST);
+
+            if(isset($validation['error']) && $validation['error']){
+                echo json_encode($validation);
+                return;
+            }
+
             $request = [
-                'name' => isset($_REQUEST['color_specific']) ? $_REQUEST['color_specific'] : $_REQUEST['color_simple'],
-                'users' => isset($_REQUEST['users']) && !empty($_REQUEST['users']) ? $_REQUEST['users'] : null,
+                'name' => isset($_POST['color_specific']) ? $_POST['color_specific'] : $_POST['color_simple'],
+                'users' => isset($_POST['users']) && !empty($_POST['users']) ? $_POST['users'] : null,
             ];
 
             $update_color = $this->color->update($request, $id);
@@ -68,6 +83,7 @@ class ColorsController
         }
 
         echo json_encode($response);
+        return;
     }
 
     public function destroy($id)
@@ -96,6 +112,7 @@ class ColorsController
         }
 
         echo json_encode($response);
+        return;
     }
 
     public function ajax()
@@ -103,5 +120,26 @@ class ColorsController
         $colors = $this->color->get();
 
         echo json_encode($colors);
+        return;
+    }
+
+    public function validate($request)
+    {
+        if(empty($request['color_simple'])){
+            if(!isset($request['color_specific']) || empty($request['color_specific'])){
+                $message = 'O campo Cor simples ou Cor específica é obrigatório!';
+
+                $response = [
+                    'error' => true,
+                    'message' => $message,
+                ];
+
+                return $response;
+            }else{
+                return true;
+            }
+        }
+
+        return true;
     }
 }

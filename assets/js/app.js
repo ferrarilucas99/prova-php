@@ -30,7 +30,11 @@ $('#add-form').on('submit', (e) => {
                 $this.trigger('reset');
                 $('#add-modal').modal('hide');
             }else{
-                toastr.error('Erro ao cadastrar.');
+                if(response.error && response.message){
+                    toastr.error(response.message);
+                }else{
+                    toastr.error('Erro ao cadastrar.');
+                }
             }
         },
         error: (xhr) => {
@@ -81,7 +85,8 @@ $(document).on('click', 'button[data-edit]', (e) => {
     modal.modal('show')
 });
 
-$('#edit-user').on('submit', (e) => {
+$('form[data-edit]').on('submit', (e) => {
+    console.log(e.currentTarget);
     e.preventDefault();
 
     var $this = $(e.currentTarget);
@@ -106,7 +111,11 @@ $('#edit-user').on('submit', (e) => {
                 $this.trigger('reset');
                 $('#edit-modal').modal('hide');
             }else{
-                toastr.error('Erro ao atualizar.');
+                if(response.error && response.message){
+                    toastr.error(response.message);
+                }else{
+                    toastr.error('Erro ao atualizar.');
+                }
             }
         },
         error: (xhr) => {
@@ -222,7 +231,7 @@ function clearModalInputs(){
 
 function setModalInputsValues(json, model){
     var modal = $('#edit-modal');
-    var form = $('#edit-user');
+    var form = $('form[data-edit]');
     var colors = modal.find('input[name="colors[]"');
     var users = modal.find('input[name="users[]"');
     

@@ -5,7 +5,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar cor <span id="model-id"></span></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST" id="edit-user">
+            <form action="" method="POST" data-edit>
                 <input type="hidden" name="_method" value="PUT">
                 <div class="modal-body">
                     <div class="alert alert-warning">Se informado os 2 campos, Cor específica terá preferência.</div>

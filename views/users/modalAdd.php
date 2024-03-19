@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Email" name="email" required>
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
                         </div>
                         <div class="col-12">
                             <?php 
